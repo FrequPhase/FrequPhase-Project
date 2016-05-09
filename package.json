@@ -1,0 +1,50 @@
+{
+  "name": "frequphase",
+  "version": "0.1.0",
+  "description": "Basically a speaker and a person spinning around in a circle in your web browser.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FrequPhase/FrequPhase-Project.git"
+  },
+  "keywords": [
+    "frequphase"
+  ],
+  "author": "people",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FrequPhase/FrequPhase-Project/issues"
+  },
+  "homepage": "https://github.com/FrequPhase/FrequPhase-Project#readme",
+  "devDependencies": {
+    "babel": "^6.5.2",
+    "babelify": "^7.3.0",
+    "browser-pack": "^6.0.1",
+    "browserify": "^13.0.1",
+    "browserify-shim": "^3.8.12",
+    "gulp": "^3.9.1",
+    "gulp-connect": "^4.0.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-watch": "^4.3.5",
+    "jquery": "^2.2.3",
+    "merge": "^1.2.0",
+    "mkdirp": "^0.5.1",
+    "watchify": "^3.7.0"
+  },
+  "browserify": {
+    "transform": [
+      "browserify-shim"
+    ]
+  },
+  "browserify-shim": {
+    "./node_modules/jquery/dist/jquery.min.js": "$",
+    "three": "global:THREE"
+  },
+  "dependencies": {
+    "jquery": "^2.2.3"
+  }
+}
