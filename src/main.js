@@ -5,6 +5,19 @@ class Main {
         this.mainCanvas = new AbstractCanvas("main-canvas");
         this.gradBase = 0;
         this.drawGrad();
+        this.images = {
+            "pinwheel": this.loadImage("img/pinwheel.png")
+        };
+    }
+
+    loadImage(url) {
+
+            let img;
+            img = new Image();
+            img.src = url;
+
+            return img;
+
     }
 
     makeGrad(width, height, colors) {
