@@ -15,7 +15,7 @@ class Main {
         let grad = this.mainCanvas.ctx.createLinearGradient(-width, -height, 2 * width, 2 * height);
         var colorLoc = this.gradBase;
         for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < colors.length; j++) {
+            for (let j = 0; j < colors.length; j++) { 
                 grad.addColorStop((colorLoc + (j / ( 3 * colors.length))) % 1, colors[j]);
             }
             colorLoc = (colorLoc + (1 / 3)) % 1;
