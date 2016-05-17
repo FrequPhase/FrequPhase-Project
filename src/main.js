@@ -1,5 +1,5 @@
 import {AbstractCanvas} from "./AbstractCanvas";
-import {rotatingImage} from "./RotatingImage";
+import {RotatingImage} from "./RotatingImage";
 
 class Main {
     constructor() {
@@ -9,18 +9,16 @@ class Main {
         this.images = {
             "pinwheel": this.loadImage("img/pinwheelMockup.png")
         };
-        this.wheel = new rotatingImage(this.images.pinwheel, 50, 50, this.mainCanvas);
-        
+        this.wheel = new RotatingImage(this.images.pinwheel, this.mainCanvas.width / 2, this.mainCanvas.height / 2, this.mainCanvas);
+        window.requestAnimationFrame(() => this.render());
     }
 
     loadImage(url) {
-
             let img;
             img = new Image();
             img.src = url;
 
             return img;
-
     }
 
 
@@ -42,10 +40,11 @@ class Main {
     }
 
     render() {
-        this.mainCanvas.ctx.clearRect(0, 0, 500, 500);
+        this.mainCanvas.ctx.clearRect(0, 0, this.mainCanvas.width / 2, this.mainCanvas.height / 2);
         this.gradBase += 0.01;
-        this.drawGrad();
-
+        //this.drawGrad();
+        this.wheel.updateImage(0.1);
+        window.requestAnimationFrame(() => this.render());
     }
 
 
@@ -60,7 +59,6 @@ class Main {
         this.mainCanvas.ctx.lineTo(150, 150);
         this.mainCanvas.ctx.lineTo(100, 150);
         this.mainCanvas.ctx.fill();
-        window.requestAnimationFrame(() => this.render());
     }
 }
 

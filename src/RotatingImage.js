@@ -10,13 +10,17 @@ export class RotatingImage {
     }
     
     updateImage(angularVelocity) {
-        let rotation = (this.isFirstTime === true) ? 0 : (angularVelocity * ((Date.now() - this.lastDrawTime) / 1000));
+        let offset = (this.isFirstTime === true) ? 0 : (angularVelocity * ((Date.now() - this.lastDrawTime) / 1000));
+        let rotation = this.angularLoc + offset;
+        console.log(rotation);
         this.isFirstTime = false;
         this.canvas.ctx.save();
         this.canvas.ctx.translate(this.center.x, this.center.y);
-        this.canvas.ctx.rotate(angularVelocity);
-        this.canvas.ctx.drawImage(this.img, -this.image.width / 2, -this.image.height / 2);
+        this.canvas.ctx.rotate(rotation);
+        this.canvas.ctx.drawImage(this.image, -this.image.width / 2, -this.image.height / 2);
         this.canvas.ctx.restore();
+        this.lastDrawTime = Date.now();
+        this.angularLoc = rotation;
     }
     
 }
