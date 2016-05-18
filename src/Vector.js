@@ -4,9 +4,9 @@
 
 export class Vector{
 
-    constructor(x, y){
-        this.magnitude = sqrt(x**2 + y**2);
-        this.direction = Math.atan2(x,y);
+    constructor(x, y){ 
+        this.magnitude = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        this.direction = Math.atan2(x, y);
 
     }
 }

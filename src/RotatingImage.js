@@ -12,7 +12,6 @@ export class RotatingImage {
     updateImage(angularVelocity) {
         let offset = (this.isFirstTime === true) ? 0 : (angularVelocity * ((Date.now() - this.lastDrawTime) / 1000));
         let rotation = this.angularLoc + offset;
-        console.log(rotation);
         this.isFirstTime = false;
         this.canvas.ctx.save();
         this.canvas.ctx.translate(this.center.x, this.center.y);

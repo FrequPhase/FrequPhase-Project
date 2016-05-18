@@ -1,11 +1,13 @@
 import {AbstractCanvas} from "./AbstractCanvas";
 import {RotatingImage} from "./RotatingImage";
 
+const OBSERVER_ANGULAR_VELOCITY = 1;
+
 class Main {
     constructor() {
         this.mainCanvas = new AbstractCanvas("main-canvas");
         this.gradBase = 0;
-        this.drawGrad();
+        //this.drawGrad();
         this.images = {
             "pinwheel": this.loadImage("img/pinwheelMockup.png")
         };
@@ -40,10 +42,21 @@ class Main {
     }
 
     render() {
-        this.mainCanvas.ctx.clearRect(0, 0, this.mainCanvas.width / 2, this.mainCanvas.height / 2);
+        this.mainCanvas.ctx.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
         this.gradBase += 0.01;
         //this.drawGrad();
-        this.wheel.updateImage(0.1);
+        this.wheel.updateImage(OBSERVER_ANGULAR_VELOCITY);
+        this.mainCanvas.ctx.save();
+        this.mainCanvas.ctx.translate(this.mainCanvas.width / 2, this.mainCanvas.height / 2);
+        this.mainCanvas.ctx.beginPath();
+        let startX = (this.images.pinwheel.width / 2) * Math.cos(this.wheel.angularLoc);
+        let startY = (this.images.pinwheel.height / 2) * Math.sin(this.wheel.angularLoc);
+        this.mainCanvas.ctx.moveTo(startX, startY);
+        let observerVelocity = OBSERVER_ANGULAR_VELOCITY * this.mainCanvas.width / 2;
+        this.mainCanvas.ctx.lineTo(startX + observerVelocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
+            observerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2) + startY);
+        this.mainCanvas.ctx.stroke();
+        this.mainCanvas.ctx.restore();
         window.requestAnimationFrame(() => this.render());
     }
 
