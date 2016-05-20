@@ -11,7 +11,10 @@ class Main {
         this.images = {
             "pinwheel": this.loadImage("img/pinwheelMockup.png")
         };
-        this.wheel = new RotatingImage(this.images.pinwheel, this.mainCanvas.width / 2, this.mainCanvas.height / 2, this.mainCanvas);
+        this.wheel = new RotatingImage(this.images.pinwheel, 
+            this.mainCanvas.width / 2, this.mainCanvas.height / 2, this.mainCanvas);
+        this.speakerVel = new Vector(observerVelocity * Math.cos(this.wheel.angularLoc + Math.PI / 2), 
+            observerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
         window.requestAnimationFrame(() => this.render());
     }
 
