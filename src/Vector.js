@@ -20,7 +20,7 @@ export class Vector{
     }
     
     sub(otherVec) {
-        return new Vector(otherVec.x + this.x, otherVec.y - this.y);
+        return new Vector(this.x - otherVec.x, this.y - otherVec.y);
     }
 
     component(otherVec) {
