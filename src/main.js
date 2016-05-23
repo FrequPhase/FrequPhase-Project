@@ -40,8 +40,10 @@ class Main {
         let speakerVelocity = this.getSpeakerAngularVelocity() * this.mainCanvas.width / 2;
         this.speakerVel = new Vector(speakerVelocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
             speakerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
-        this.posVec = new Vector(this.speakerVel.x - this.obsX, this.speakerVel.y - this.obsY);
-        console.log(dopplerShift(0, this.speakerVel.component(this.posVec) * SCALE, 100, 343));
+        this.posVec = new Vector((Math.cos(this.rick.angularLoc) * this.rick.radius) + (this.mainCanvas.width / 2) - this.obsX,
+            (Math.sin(this.rick.angularLoc) * this.rick.radius) + (this.mainCanvas.height / 2 - this.obsY));
+        //console.log(dopplerShift(0, this.speakerVel.component(this.posVec) * SCALE, 100, 343));
+        console.log(this.speakerVel.component(this.posVec) * SCALE);
         this.rick.updateImage(this.getSpeakerAngularVelocity());
         window.requestAnimationFrame(() => this.render());
     }
