@@ -7,7 +7,13 @@
 </head>
 <body>
     <canvas width="1000" height="1000" id="main-canvas"></canvas>
+    <input id="tone-button" type="radio" name="tone-type" value="tone">Tone</br>
+    <input id="mp3-button"  type="radio" name="tone-type" value="mp3">Mp3</br>
+    <input type="text" name="url">
+    <h4>Speaker Velocity</h4>
     <input type="range" id="speaker-velocity" min="-5" max="5" step="0.1">
+    <h4>Emitted Frequency</h4>
+    <input type="range" id="origin-frequency" min="50" max="250" step="0.1">
     <script src="main.js"></script>
 </body>
 </html>
