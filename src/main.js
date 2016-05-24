@@ -15,6 +15,7 @@ class Main {
             "pinwheel": this.loadImage("img/pinwheelMockup.png"),
             "rick": this.loadImage('img/person.png')
         };
+
         this.wheel = new RotatingImage(this.images.pinwheel, 
             this.mainCanvas.width / 2, this.mainCanvas.height / 2, this.mainCanvas);
         this.rick = new RotatingTranslatedImage(this.images.rick,
@@ -39,7 +40,7 @@ class Main {
         let speakerVelocity = this.getSpeakerAngularVelocity() * this.mainCanvas.width / 2;
         this.speakerVel = new Vector(speakerVelocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
             speakerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
-        this.observerVec = new Vector(900, 500);
+        this.observerVec = new Vector(900, 700);
         this.speakerVec = new Vector((Math.cos(this.rick.angularLoc) * this.rick.radius) + (this.mainCanvas.width / 2), (Math.sin(this.rick.angularLoc) * this.rick.radius) + (this.mainCanvas.height / 2));
         this.posVec = this.observerVec.sub(this.speakerVec);
         console.log(dopplerShift(0, this.speakerVel.component(this.posVec) * SCALE, 100, 343));
