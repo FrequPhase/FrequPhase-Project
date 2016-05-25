@@ -2298,6 +2298,7 @@ Reverb.prototype.process = function (interleavedSamples){
     return outputSamples;
 };
 
+/*
 if (module && typeof module.exports !== 'undefined') {
     module.exports = {
         DSP: DSP,
@@ -2318,3 +2319,4 @@ if (module && typeof module.exports !== 'undefined') {
         Reverb: Reverb
     };
 }
+*/
