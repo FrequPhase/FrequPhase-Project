@@ -13,17 +13,19 @@ class Main {
         this.gradBase = 0;
         this.images = {
             "pinwheel": this.loadImage("img/pinwheel.png"),
+            "backPinwheel": this.loadImage("img/BackPinwheel.png"),
             "rick": this.loadImage('img/rick.png'),
-            "person": this.loadImage('img/person.png')
+            "person": this.loadImage('img/person.png'),
+            "speaker": this.loadImage('img/speaker.png')
         };
 
         this.wheel = new RotatingImage(this.images.pinwheel, 
             this.mainCanvas.width / 2, this.mainCanvas.height / 2, this.mainCanvas);
-        this.backWheel = new RotatingImage(this.images.pinwheel,
+        this.backWheel = new RotatingImage(this.images.backPinwheel,
             this.mainCanvas.width / 2, this.mainCanvas.height / 2, this.mainCanvas);
-        this.rick = new RotatingTranslatedImage(this.images.rick,
+        this.speaker = new RotatingTranslatedImage(this.images.speaker,
             this.mainCanvas.width / 2, this.mainCanvas.height / 2,
-            this.mainCanvas, (this.images.pinwheel.width / 2) + 100);
+            this.mainCanvas, (this.images.backPinwheel.width / 2) - 46);
         this.obs = new RotatingTranslatedImage(this.images.person,
             this.mainCanvas.width / 2, this.mainCanvas.height / 2,
             this.mainCanvas, (this.images.pinwheel.width / 2) - 50);
@@ -43,19 +45,25 @@ class Main {
 
     render() {
         this.mainCanvas.ctx.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
+        this.backWheel.updateImage(this.getSpeakerAngularVelocity());
         this.wheel.updateImage(this.getObserverAngularVelocity());
         let startX = (this.images.pinwheel.width / 2) * Math.cos(this.wheel.angularLoc);
         let startY = (this.images.pinwheel.height / 2) * Math.sin(this.wheel.angularLoc);
         let speakerVelocity = this.getSpeakerAngularVelocity() * this.mainCanvas.width / 2;
         this.speakerVel = new Vector(speakerVelocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
             speakerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
+        let observerVelocity = this.getObserverAngularVelocity() * this.mainCanvas.width / 2;
+        this.observerVel = new Vector(Velocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
+            observerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
         this.observerVec = new Vector((Math.cos(this.obs.angularLoc) * this.obs.radius) + (this.mainCanvas.width / 2), (Math.sin(this.obs.angularLoc) * this.obs.radius) + (this.mainCanvas.height / 2));
-        this.speakerVec = new Vector((Math.cos(this.rick.angularLoc) * this.rick.radius) + (this.mainCanvas.width / 2), (Math.sin(this.rick.angularLoc) * this.rick.radius) + (this.mainCanvas.height / 2));
+        this.speakerVec = new Vector((Math.cos(this.speaker.angularLoc) * this.speaker.radius) + (this.mainCanvas.width / 2), (Math.sin(this.speaker.angularLoc) * this.speaker.radius) + (this.mainCanvas.height / 2));
         this.posVec = this.observerVec.sub(this.speakerVec);
-        console.log(+document.getElementById('origin-frequency').value * dopplerShift(0, this.speakerVel.component(this.posVec) * SCALE, 343));
+        this.posVec2 = this.speakerVec.sub(this.observerVec);
+
+        console.log(+document.getElementById('origin-frequency').value * dopplerShift(this.obs, this.speakerVel.component(this.posVec) * SCALE, 343));
         //console.log(this.speakerVel.component(this.posVec) * SCALE);
         this.obs.updateImage(this.getObserverAngularVelocity());
-        this.rick.updateImage(this.getSpeakerAngularVelocity());
+        this.speaker.updateImage(this.getSpeakerAngularVelocity());
         console.log(document.getElementById("tone-button").checked);
         window.requestAnimationFrame(() => this.render());
     }
@@ -74,6 +82,10 @@ class Main {
 
     getObserverAngularVelocity() {
         return SPEAKER_ANGULAR_VELOCITY * (+document.getElementById("observer-velocity").value);
+    }
+
+    dopplerScale() {
+        return dopplerShift(0, this.speakerVel.component(this.posVec) * SCALE, 343);
     }
 }
 
