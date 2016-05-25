@@ -53,18 +53,18 @@ class Main {
         this.speakerVel = new Vector(speakerVelocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
             speakerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
         let observerVelocity = this.getObserverAngularVelocity() * this.mainCanvas.width / 2;
-        this.observerVel = new Vector(Velocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
+        this.observerVel = new Vector(observerVelocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
             observerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
         this.observerVec = new Vector((Math.cos(this.obs.angularLoc) * this.obs.radius) + (this.mainCanvas.width / 2), (Math.sin(this.obs.angularLoc) * this.obs.radius) + (this.mainCanvas.height / 2));
         this.speakerVec = new Vector((Math.cos(this.speaker.angularLoc) * this.speaker.radius) + (this.mainCanvas.width / 2), (Math.sin(this.speaker.angularLoc) * this.speaker.radius) + (this.mainCanvas.height / 2));
         this.posVec = this.observerVec.sub(this.speakerVec);
         this.posVec2 = this.speakerVec.sub(this.observerVec);
 
-        console.log(+document.getElementById('origin-frequency').value * dopplerShift(this.obs, this.speakerVel.component(this.posVec) * SCALE, 343));
+        console.log(+document.getElementById('origin-frequency').value * dopplerShift(this.observerVel.component(this.posVec2) * SCALE, this.speakerVel.component(this.posVec) * SCALE, 343));
         //console.log(this.speakerVel.component(this.posVec) * SCALE);
         this.obs.updateImage(this.getObserverAngularVelocity());
         this.speaker.updateImage(this.getSpeakerAngularVelocity());
-        console.log(document.getElementById("tone-button").checked);
+       // console.log(document.getElementById("tone-button").checked);
         window.requestAnimationFrame(() => this.render());
     }
 
