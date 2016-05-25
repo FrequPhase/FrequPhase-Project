@@ -51,7 +51,7 @@ class Main {
         this.mainCanvas.ctx.drawImage(this.images.person, this.observerVec.x, this.observerVec.y);
         //console.log(this.speakerVel.component(this.posVec) * SCALE);
         this.rick.updateImage(this.getSpeakerAngularVelocity());
-        console.log(document.getElementById("tone").checked);
+        console.log(document.getElementById("tone-button").checked);
         window.requestAnimationFrame(() => this.render());
     }
 
