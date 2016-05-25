@@ -1,5 +1,5 @@
 
-export function dopplerShift(relVelO, relVelS, originFre, vSound) {
-    let newFre = originFre * (vSound + relVelO) / (vSound - relVelS);
-    return newFre;
+export function dopplerShift(relVelO, relVelS, vSound) {
+    let FreMult = (vSound + relVelO) / (vSound - relVelS);
+    return FreMult;
 }
