@@ -96,6 +96,7 @@ Pitchshift.prototype.process = function (pitchShift, numSampsToProcess, osamp, i
 
         /* now we have enough data for processing */
         if (this.gRover_ >= this.fftFrameSize_) {
+            console.log("hi");
 
             this.gRover_ = inFifoLatency;
 

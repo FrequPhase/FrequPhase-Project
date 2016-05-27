@@ -3,6 +3,7 @@ import {RotatingImage} from "./RotatingImage";
 import {Vector} from "./Vector";
 import {dopplerShift} from "./DopplerShift";
 import {RotatingTranslatedImage} from "./RotatingTranslatedImage";
+import {FrequencyShifter} from "./FrequencyShifter";
 
 const SPEAKER_ANGULAR_VELOCITY = 1;
 const SCALE = 0.1;
@@ -33,7 +34,20 @@ class Main {
         document.getElementById("tone-button").addEventListener("onclick", () => this.setOutputTypeTone());
         document.getElementById("mp3-button").addEventListener("onclick", () => this.setOutputTypeMp3());
 
+        this.konami = new Konami(() => this.rickroll());
+        
+        this.rickrolled = false;
+
+        this.shifter = undefined;
+        this.setOutputTypeTone();
+
         window.requestAnimationFrame(() => this.render());
+    }
+
+    rickroll() {
+        this.rickrolled = true;
+        this.speaker.image = this.images.rick;
+        this.createMusicNodeAndShifter("http://here-and-now.info/audio/rickastley_artists.mp3");
     }
 
     loadImage(url) {
@@ -47,33 +61,47 @@ class Main {
         this.mainCanvas.ctx.clearRect(0, 0, this.mainCanvas.width, this.mainCanvas.height);
         this.backWheel.updateImage(this.getSpeakerAngularVelocity());
         this.wheel.updateImage(this.getObserverAngularVelocity());
-        let startX = (this.images.pinwheel.width / 2) * Math.cos(this.wheel.angularLoc);
-        let startY = (this.images.pinwheel.height / 2) * Math.sin(this.wheel.angularLoc);
-        let speakerVelocity = this.getSpeakerAngularVelocity() * this.mainCanvas.width / 2;
-        this.speakerVel = new Vector(speakerVelocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
-            speakerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
-        let observerVelocity = this.getObserverAngularVelocity() * this.mainCanvas.width / 2;
-        this.observerVel = new Vector(observerVelocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
-            observerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
-        this.observerVec = new Vector((Math.cos(this.obs.angularLoc) * this.obs.radius) + (this.mainCanvas.width / 2), (Math.sin(this.obs.angularLoc) * this.obs.radius) + (this.mainCanvas.height / 2));
-        this.speakerVec = new Vector((Math.cos(this.speaker.angularLoc) * this.speaker.radius) + (this.mainCanvas.width / 2), (Math.sin(this.speaker.angularLoc) * this.speaker.radius) + (this.mainCanvas.height / 2));
-        this.posVec = this.observerVec.sub(this.speakerVec);
-        this.posVec2 = this.speakerVec.sub(this.observerVec);
-
-        console.log(+document.getElementById('origin-frequency').value * dopplerShift(this.observerVel.component(this.posVec2) * SCALE, this.speakerVel.component(this.posVec) * SCALE, 343));
-        //console.log(this.speakerVel.component(this.posVec) * SCALE);
         this.obs.updateImage(this.getObserverAngularVelocity());
         this.speaker.updateImage(this.getSpeakerAngularVelocity());
-       // console.log(document.getElementById("tone-button").checked);
+        if (this.inputNode.frequency) {
+            this.inputNode.frequency.value = this.getFrequency();
+        }
+        this.shifter.setShift(this.dopplerScale());
         window.requestAnimationFrame(() => this.render());
     }
 
     setOutputTypeTone() {
-
+        if (!this.rickrolled) {
+            if (this.shifter) {
+                this.shifter.stop();
+            }
+            let context = new AudioContext();
+            this.inputNode = context.createOscillator();
+            this.inputNode.frequency.value = this.getFrequency();
+            this.inputNode.start();
+            this.shifter = new FrequencyShifter(context, this.inputNode, context.destination);
+            this.audio = undefined;
+        }
     }
 
     setOutputTypeMp3() {
-        
+        if (!this.rickrolled) {
+            this.createMusicNodeAndShifter(this.getMp3Url());
+        }
+    }
+    
+    createMusicNodeAndShifter(url) {
+        if (this.shifter) {
+            this.shifter.stop();
+        }
+        let context = new AudioContext();
+        this.audio = new Audio(url);
+        this.audio.crossOrigin = "anonymous";
+        this.audio.autoplay = true;
+        this.audio.loop = true;
+        this.audio.play();
+        this.inputNode = context.createMediaElementSource(this.audio);
+        this.shifter = new FrequencyShifter(context, this.inputNode, context.destination);
     }
 
     getSpeakerAngularVelocity() {
@@ -84,8 +112,28 @@ class Main {
         return SPEAKER_ANGULAR_VELOCITY * (+document.getElementById("observer-velocity").value);
     }
 
+    getMp3Url() {
+        return document.getElementById("url-text");
+    }
+
+    getFrequency() {
+        return (+document.getElementById("origin-frequency").value);
+    }
+
     dopplerScale() {
-        return dopplerShift(0, this.speakerVel.component(this.posVec) * SCALE, 343);
+        let startX = (this.images.pinwheel.width / 2) * Math.cos(this.wheel.angularLoc);
+        let startY = (this.images.pinwheel.height / 2) * Math.sin(this.wheel.angularLoc);
+        let speakerVelocity = this.getSpeakerAngularVelocity() * this.mainCanvas.width / 2;
+        let speakerVel = new Vector(speakerVelocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
+            speakerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
+        let observerVelocity = this.getObserverAngularVelocity() * this.mainCanvas.width / 2;
+        let observerVel = new Vector(observerVelocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
+            observerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
+        let observerVec = new Vector((Math.cos(this.obs.angularLoc) * this.obs.radius) + (this.mainCanvas.width / 2), (Math.sin(this.obs.angularLoc) * this.obs.radius) + (this.mainCanvas.height / 2));
+        let speakerVec = new Vector((Math.cos(this.speaker.angularLoc) * this.speaker.radius) + (this.mainCanvas.width / 2), (Math.sin(this.speaker.angularLoc) * this.speaker.radius) + (this.mainCanvas.height / 2));
+        let posVec = observerVec.sub(speakerVec);
+        let posVec2 = speakerVec.sub(observerVec);
+        return dopplerShift(0, speakerVel.component(posVec) * SCALE, 343);
     }
 }
 
