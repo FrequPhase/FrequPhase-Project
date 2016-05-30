@@ -133,7 +133,7 @@ class Main {
         let speakerVec = new Vector((Math.cos(this.speaker.angularLoc) * this.speaker.radius) + (this.mainCanvas.width / 2), (Math.sin(this.speaker.angularLoc) * this.speaker.radius) + (this.mainCanvas.height / 2));
         let posVec = observerVec.sub(speakerVec);
         let posVec2 = speakerVec.sub(observerVec);
-        return dopplerShift(0, speakerVel.component(posVec) * SCALE, 343);
+        return dopplerShift(observerVel.component(posVec2) * SCALE, speakerVel.component(posVec) * SCALE, 343);
     }
 }
 
