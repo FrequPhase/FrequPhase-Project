@@ -98,7 +98,7 @@ class Main {
             this.shifter.stop();
         }
         let context = new AudioContext();
-        this.audio = new Audio(url);
+        this.audio = new Audio("http://cors.io/?u=" + url);
         this.audio.onerror = () => {
             this.setOutputTypeTone();
         };
