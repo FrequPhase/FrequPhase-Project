@@ -49,6 +49,8 @@
     "three": "global:THREE"
   },
   "dependencies": {
-    "jquery": "^2.2.3"
+    "jquery": "^2.2.3",
+    "pitch-shift": "0.0.0",
+    "typedarray-pool": "^1.1.0"
   }
 }

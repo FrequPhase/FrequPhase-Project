@@ -1,8 +1,18 @@
 #main-canvas {
+    float: left;
+    width: 800px;
+}
+
+#content {
     padding-left: 0;
     padding-right: 0;
     margin-left: auto;
     margin-right: auto;
     display: block;
-    width: 800px;
+    width: 1000px;
+}
+
+#controls {
+    padding-top: 200px;
+    float: left;
 }

@@ -6,7 +6,7 @@ import {RotatingTranslatedImage} from "./RotatingTranslatedImage";
 import {FrequencyShifter} from "./FrequencyShifter";
 
 const SPEAKER_ANGULAR_VELOCITY = 1;
-const SCALE = 0.1;
+const SCALE = 0.01;
 
 class Main {
     constructor() {
@@ -20,34 +20,35 @@ class Main {
             "speaker": this.loadImage('img/speaker.png')
         };
 
-        this.wheel = new RotatingImage(this.images.pinwheel, 
-            this.mainCanvas.width / 2, this.mainCanvas.height / 2, this.mainCanvas);
-        this.backWheel = new RotatingImage(this.images.backPinwheel,
-            this.mainCanvas.width / 2, this.mainCanvas.height / 2, this.mainCanvas);
-        this.speaker = new RotatingTranslatedImage(this.images.speaker,
-            this.mainCanvas.width / 2, this.mainCanvas.height / 2,
-            this.mainCanvas, (this.images.backPinwheel.width / 2) - 46);
-        this.obs = new RotatingTranslatedImage(this.images.person,
-            this.mainCanvas.width / 2, this.mainCanvas.height / 2,
-            this.mainCanvas, (this.images.pinwheel.width / 2) - 50);
 
-        document.getElementById("tone-button").addEventListener("onclick", () => this.setOutputTypeTone());
-        document.getElementById("mp3-button").addEventListener("onclick", () => this.setOutputTypeMp3());
+        this.images.pinwheel.onload = () => {
+            this.wheel = new RotatingImage(this.images.pinwheel,
+                this.mainCanvas.width / 2, this.mainCanvas.height / 2, this.mainCanvas);
+            this.backWheel = new RotatingImage(this.images.backPinwheel,
+                this.mainCanvas.width / 2, this.mainCanvas.height / 2, this.mainCanvas);
+            this.speaker = new RotatingTranslatedImage(this.images.speaker,
+                this.mainCanvas.width / 2, this.mainCanvas.height / 2,
+                this.mainCanvas, (this.images.backPinwheel.width / 2) - 46);
+            this.obs = new RotatingTranslatedImage(this.images.person,
+                this.mainCanvas.width / 2, this.mainCanvas.height / 2,
+                this.mainCanvas, (this.images.pinwheel.width / 2) - 50);
+            document.getElementById("tone-button").onclick = () => this.setOutputTypeTone();
+            document.getElementById("mp3-button").onclick = () => this.setOutputTypeMp3();
 
-        this.konami = new Konami(() => this.rickroll());
-        
-        this.rickrolled = false;
+            this.konami = new Konami(() => this.rickroll());
 
-        this.shifter = undefined;
-        this.setOutputTypeTone();
+            this.rickrolled = false;
 
-        window.requestAnimationFrame(() => this.render());
+            this.shifter = undefined;
+
+            window.requestAnimationFrame(() => this.render());
+        };
     }
 
     rickroll() {
         this.rickrolled = true;
         this.speaker.image = this.images.rick;
-        this.createMusicNodeAndShifter("http://here-and-now.info/audio/rickastley_artists.mp3");
+        this.createMusicNodeAndShifter("https://ia800805.us.archive.org/27/items/NeverGonnaGiveYouUp/jocofullinterview41.mp3");
     }
 
     loadImage(url) {
@@ -63,10 +64,12 @@ class Main {
         this.wheel.updateImage(this.getObserverAngularVelocity());
         this.obs.updateImage(this.getObserverAngularVelocity());
         this.speaker.updateImage(this.getSpeakerAngularVelocity());
-        if (this.inputNode.frequency) {
+        if (this.inputNode && this.inputNode.frequency) {
             this.inputNode.frequency.value = this.getFrequency();
         }
-        this.shifter.setShift(this.dopplerScale());
+        if (this.shifter) {
+            this.shifter.setShift(this.dopplerScale());
+        }
         window.requestAnimationFrame(() => this.render());
     }
 
@@ -96,6 +99,9 @@ class Main {
         }
         let context = new AudioContext();
         this.audio = new Audio(url);
+        this.audio.onerror = () => {
+            this.setOutputTypeTone();
+        };
         this.audio.crossOrigin = "anonymous";
         this.audio.autoplay = true;
         this.audio.loop = true;
@@ -113,7 +119,7 @@ class Main {
     }
 
     getMp3Url() {
-        return document.getElementById("url-text");
+        return document.getElementById("url-text").value;
     }
 
     getFrequency() {

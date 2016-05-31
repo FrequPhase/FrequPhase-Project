@@ -32,7 +32,6 @@ var Konami = function (callback) {
                 konami.input += e ? e.keyCode : event.keyCode;
                 if (konami.input.length > konami.pattern.length)
                     konami.input = konami.input.substr((konami.input.length - konami.pattern.length));
-                console.log(konami.input);
                 if (konami.input == konami.pattern) {
                     konami.code(link);
                     konami.input = "";
