@@ -1,6 +1,9 @@
 #main-canvas {
     float: left;
     width: 800px;
+    position: absolute;
+    top: 120px;
+    left: calc(50% - 400px);
 }
 
 #content {
@@ -13,6 +16,30 @@
 }
 
 #controls {
-    padding-top: 200px;
+    width: 200px;
     float: left;
+    position: absolute;
+    top: 320px;
+    left: calc(50% - 600px);
+}
+
+header{
+    margin-top: 25px;
+}
+
+#title-image {
+    display: block;
+    margin: 0 auto;
+    height: 100px;
+}
+
+#main-canvas {
+    padding: 20px;
+}
+
+label {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-style: normal;
+    margin: 5px;
+    font-size: 18px;
 }
