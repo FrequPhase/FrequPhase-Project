@@ -7,7 +7,6 @@ export class FrequencyShifter {
     constructor(context, inputNode, outputNode) {
         this.audioContext = context;
         this.processorNode = this.audioContext.createScriptProcessor(FRAME_SIZE, 1, 1);
-        //this.shifter = new Pitchshift(4096, this.audioContext.sampleRate, "FFT");
         this.queue = [];
         this.shifter = MikoPitchShift((data) => this.useData(data), () => this.getShift(), {
                 frameSize: FRAME_SIZE
@@ -52,18 +51,5 @@ export class FrequencyShifter {
         this.queue.shift();
         out.set(q);
         pool.freeFloat32(q);
-
-        /*
-        let outputBuffer = event.outputBuffer;
-        let inputBuffer = event.inputBuffer;
-
-        for (let channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
-            let inputData = inputBuffer.getChannelData(channel);
-            let outputData = outputBuffer.getChannelData(channel);
-            this.shifter.process(this.shiftMultiplier, inputData.length, 4, inputData);
-            for (let i = 0; i < outputData.length; ++i) {
-                outputData[i] = this.shifter.outdata[i];
-            }
-        } */
     }
 }

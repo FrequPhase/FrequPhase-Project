@@ -4,21 +4,37 @@
     <meta charset="UTF-8">
     <title>FrequPhase</title>
     <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="icon" type="image/png" href="img/favicon/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="img/favicon/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="img/favicon/favicon-64x64.png" sizes="64x64">
 </head>
 <body>
+    <header>
+        <div id="title-image-container">
+            <img id="title-image" src="img/logo.png" alt="FrequPhase"/>
+        </div>
+    </header>
     <div id="content">
         <div id="controls">
-            <input id="tone-button" type="radio" name="tone-type" value="tone">Tone<br>
-            <input id="mp3-button"  type="radio" name="tone-type" value="mp3">Mp3<br>
-            <input id="url-text" type="text" name="url" value="https://ia802705.us.archive.org/22/items/iuma-darude/Darude_-_Sandstorm.mp3">
-            <h4>Speaker Velocity</h4>
-            <input type="range" id="speaker-velocity" min="-5" max="5" step="0.1">
-            <h4>Observer Velocity</h4>
-            <input type="range" id="observer-velocity" min="-5" max="5" step="0.1">
-            <h4>Emitted Frequency</h4>
-            <input type="range" id="origin-frequency" min="50" max="250" step="0.1">
+            <input id="tone-button" type="radio" name="tone-type" value="tone"/>
+            <label for="tone-button" class="radio-text">Tone</label>
+            <br>
+            <label for="origin-frequency">Emitted Frequency</label>
+            <input type="range" id="origin-frequency" min="50" max="250" step="0.1"/>
+            <br>
+            <input id="mp3-button"  type="radio" name="tone-type" value="mp3"/>
+            <label for="mp3-button" class="radio-text">Audio</label>
+            <br>
+            <input id="url-text" type="text" name="url" class="form-control" placeholder="Audio File URL" value="https://ia802705.us.archive.org/22/items/iuma-darude/Darude_-_Sandstorm.mp3">
+            <br>
+            <br>
+            <label for="speaker-velocity">Speaker Velocity</label>
+            <input type="range" id="speaker-velocity" min="-5" max="5" step="0.1"/>
+            <label for="observer-velocity">Observer Velocity</label>
+            <input type="range" id="observer-velocity" min="-5" max="5" step="0.1"/>
         </div>
-        <canvas width="1000" height="1000" id="main-canvas"></canvas>
+        <canvas width="900" height="900" id="main-canvas"></canvas>
     </div>
 
     <script src="konami.js"></script>

@@ -17,6 +17,7 @@ class Main {
             "backPinwheel": this.loadImage("img/BackPinwheel.png"),
             "rick": this.loadImage('img/rick.png'),
             "person": this.loadImage('img/person.png'),
+            "rickrolledperson": this.loadImage("img/rickrolledperson.png"),
             "speaker": this.loadImage('img/speaker.png')
         };
 
@@ -48,6 +49,7 @@ class Main {
     rickroll() {
         this.rickrolled = true;
         this.speaker.image = this.images.rick;
+        this.obs.image = this.images.rickrolledperson;
         this.createMusicNodeAndShifter("https://ia800805.us.archive.org/27/items/NeverGonnaGiveYouUp/jocofullinterview41.mp3");
     }
 
@@ -131,12 +133,15 @@ class Main {
         let startY = (this.images.pinwheel.height / 2) * Math.sin(this.wheel.angularLoc);
         let speakerVelocity = this.getSpeakerAngularVelocity() * this.mainCanvas.width / 2;
         let speakerVel = new Vector(speakerVelocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
-            speakerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
+                speakerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
         let observerVelocity = this.getObserverAngularVelocity() * this.mainCanvas.width / 2;
         let observerVel = new Vector(observerVelocity * Math.cos(this.wheel.angularLoc + Math.PI / 2),
-            observerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
-        let observerVec = new Vector((Math.cos(this.obs.angularLoc) * this.obs.radius) + (this.mainCanvas.width / 2), (Math.sin(this.obs.angularLoc) * this.obs.radius) + (this.mainCanvas.height / 2));
-        let speakerVec = new Vector((Math.cos(this.speaker.angularLoc) * this.speaker.radius) + (this.mainCanvas.width / 2), (Math.sin(this.speaker.angularLoc) * this.speaker.radius) + (this.mainCanvas.height / 2));
+                observerVelocity * Math.sin(this.wheel.angularLoc + Math.PI / 2));
+        let observerVec = new Vector((Math.cos(this.obs.angularLoc) * this.obs.radius) + (this.mainCanvas.width / 2),
+                (Math.sin(this.obs.angularLoc) * this.obs.radius) + (this.mainCanvas.height / 2));
+        let speakerVec = new Vector((Math.cos(this.speaker.angularLoc) * this.speaker.radius) +
+                (this.mainCanvas.width / 2), (Math.sin(this.speaker.angularLoc) * this.speaker.radius) +
+                (this.mainCanvas.height / 2));
         let posVec = observerVec.sub(speakerVec);
         let posVec2 = speakerVec.sub(observerVec);
         return dopplerShift(observerVel.component(posVec2) * SCALE, speakerVel.component(posVec) * SCALE, 343);
