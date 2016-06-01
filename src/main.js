@@ -35,6 +35,7 @@ class Main {
                 this.mainCanvas, (this.images.pinwheel.width / 2) - 50);
             document.getElementById("tone-button").onclick = () => this.setOutputTypeTone();
             document.getElementById("mp3-button").onclick = () => this.setOutputTypeMp3();
+            document.getElementById("stop-button").onclick = () => this.stopAudio();
 
             this.konami = new Konami(() => this.rickroll());
 
@@ -73,6 +74,17 @@ class Main {
             this.shifter.setShift(this.dopplerScale());
         }
         window.requestAnimationFrame(() => this.render());
+    }
+
+    stopAudio() {
+        if (!this.rickrolled) {
+            if (this.shifter) {
+                this.shifter.stop();
+            }
+            this.shifter = undefined;
+            this.audio = undefined;
+            this.inputNode = undefined;
+        }
     }
 
     setOutputTypeTone() {
