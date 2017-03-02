@@ -112,7 +112,7 @@ class Main {
             this.shifter.stop();
         }
         let context = new AudioContext();
-        this.audio = new Audio("http://cors.io/?u=" + url);
+        this.audio = new Audio("https://crossorigin.me/" + url);
         this.audio.onerror = () => {
             this.setOutputTypeTone();
         };
