@@ -9436,7 +9436,7 @@ var Main = function () {
                 this.shifter.stop();
             }
             var context = new AudioContext();
-            this.audio = new Audio("http://cors.io/?u=" + url);
+            this.audio = new Audio("https://crossorigin.me/" + url);
             this.audio.onerror = function () {
                 _this3.setOutputTypeTone();
             };
